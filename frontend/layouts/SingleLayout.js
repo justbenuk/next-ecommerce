@@ -3,8 +3,9 @@ import Head from 'next/head'
 
 // components
 import Header from '@/components/Header/Header'
+import Footer from '@/components/Footer/Footer'
 
-export default function MainLayout( { title, description, children } ) {
+export default function SingleLayout( { title, description, children } ) {
   return (
     <>
       <Head>
@@ -13,9 +14,12 @@ export default function MainLayout( { title, description, children } ) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>
+      <div className='min-h-screen flex flex-col items-center justify-between'>
         <Header />
-        <div className='container mx-auto px-6'> { children }</div>
+        <div className='container mx-auto px-6 h-full'>
+          { children }
+        </div>
+        <Footer />
       </div>
     </>
   )

@@ -7,7 +7,7 @@ export default function Header() {
   const [ navbarOpen, setNavbarOpen ] = useState( false );
   return (
     <>
-      <nav className="relative flex flex-wrap items-center justify-between px-2 py-2 bg-slate-500">
+      <nav className="relative flex flex-wrap items-center justify-between px-2 py-2 bg-gray-800 w-full">
         <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
           <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
             <Link
@@ -46,14 +46,6 @@ export default function Header() {
                   href="/store"
                 >
                   Store
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                  href="/contact"
-                >
-                  Contact
                 </Link>
               </li>
               <li className="nav-item">
