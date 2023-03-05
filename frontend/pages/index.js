@@ -8,18 +8,19 @@ import Slider from '@/components/Slider/Slider'
 import { API_URL } from '@/config/config'
 import { gql, GraphQLClient } from 'graphql-request'
 
-export default function Home( { products } ) {
+export default function Home({ products }) {
+
 
   return (
     <MainLayout title='E-Commerce Store'>
-      <Slider products={ products } />
-      <ProductsList products={ products } />
+      <Slider products={products} />
+      <ProductsList products={products} />
     </MainLayout>
   )
 }
 
 export async function getServerSideProps() {
-  const client = new GraphQLClient( API_URL )
+  const client = new GraphQLClient(API_URL)
   const query = gql`{
         products{
     data{
@@ -50,7 +51,7 @@ export async function getServerSideProps() {
   }
   }`
 
-  const response = await client.request( query )
+  const response = await client.request(query)
 
   return {
     props: { products: response.products }
