@@ -5,11 +5,19 @@ import Link from 'next/link';
 import { FaBars } from 'react-icons/fa'
 
 //data
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '@/features/auth/authSlice'
 
 export default function Header() {
 
+  const currentUser = useSelector( ( state ) => state.auth.user )
+  const dispatch = useDispatch()
 
-  const [navbarOpen, setNavbarOpen] = useState(false);
+  const onLogout = () => {
+    dispatch( logout() )
+  }
+
+  const [ navbarOpen, setNavbarOpen ] = useState( false );
   return (
     <>
       <nav className="relative flex flex-wrap items-center justify-between px-2 py-2 bg-gray-800 w-full">
@@ -24,7 +32,7 @@ export default function Header() {
             <button
               className="text-white cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
               type="button"
-              onClick={() => setNavbarOpen(!navbarOpen)}
+              onClick={ () => setNavbarOpen( !navbarOpen ) }
             >
               <FaBars />
             </button>
@@ -32,7 +40,7 @@ export default function Header() {
           <div
             className={
               "lg:flex flex-grow items-center" +
-              (navbarOpen ? " flex" : " hidden")
+              ( navbarOpen ? " flex" : " hidden" )
             }
             id="example-navbar-danger"
           >
@@ -53,28 +61,34 @@ export default function Header() {
                   Store
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link
-                  className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                  href="/cart"
-                >
-                  Cart
-                </Link>
-              </li>
-              <li className="nav-item">
-                <button
-                  className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                  onClick={() => signOut()}>
-                  Log Out
-                </button>
-              </li>
-              <Link
-                className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                href="/auth/login"
-              >
-                Login
-              </Link>
-
+              { currentUser ? (
+                <>
+                  <li className="nav-item">
+                    <Link
+                      className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
+                      href="/cart"
+                    >
+                      Cart
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
+                      onClick={ onLogout }>
+                      Log Out
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <li className="nav-item">
+                  <Link
+                    className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
+                    href="/auth/login"
+                  >
+                    Login
+                  </Link>
+                </li>
+              ) }
             </ul>
           </div>
         </div>

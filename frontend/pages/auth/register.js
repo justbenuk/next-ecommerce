@@ -1,17 +1,20 @@
-import { useState } from 'react'
-import SingleLayout from "@/layouts/SingleLayout";
-import { useSelector, useDispatch } from 'react-redux';
-import { login } from '@/features/auth/authSlice';
+import React, { useState } from 'react'
+import SingleLayout from '@/layouts/SingleLayout'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
-import Link from 'next/link';
-export default function Login() {
+import { useDispatch } from 'react-redux'
+import { register } from '@/features/auth/authSlice'
+
+export default function Register() {
   const initialState = {
+    name: '',
     email: '',
     password: '',
   }
   const [ formData, setFormData ] = useState( initialState )
 
-  const { email, password } = formData
+  const { name, email, password } = formData
+
   const router = useRouter()
   const dispatch = useDispatch()
   const handleChange = ( e ) => {
@@ -20,23 +23,30 @@ export default function Login() {
       [ e.target.id ]: e.target.value
     } ) )
   }
-  const handleSubmit = ( e, formData ) => {
+  const handleSubmit = ( e ) => {
     e.preventDefault()
     const userData = {
+      name,
       email,
       password
     }
-    dispatch( login( userData ) )
+    dispatch( register( userData ) )
       .unwrap()
       .then( ( user ) => {
         console.log( 'logged in' )
         router.push( '/' )
       } )
+      .catch( err => {
+        console.log( err )
+      } )
   }
   return (
-    <SingleLayout title='Log In'>
+    <SingleLayout>
       <div className='w-1/3 bg-white shadow-xl border mx-auto'>
         <form onSubmit={ handleSubmit } className='flex flex-col items-center justify-center p-6'>
+          <div className='w-full pt-4'>
+            <input className='w-full border p-2' type='name' id='name' placeholder='Enter Your Name' onChange={ handleChange } value={ formData.name } />
+          </div>
           <div className='w-full pt-4'>
             <input className='w-full border p-2' type='email' id='email' placeholder='Enter Your Email' onChange={ handleChange } value={ formData.email } />
           </div>
@@ -47,7 +57,7 @@ export default function Login() {
             <button className='bg-gray-800 text-white py-2 w-full'>Sign In</button>
           </div>
           <div className='flex flex-row items-end pt-4 justify-end w-full underline'>
-            <Link href='/auth/register' className='text-sm'>Dont Have An account? Register</Link>
+            <Link href='/auth/register' className='text-sm'>Already Have An account? Login</Link>
           </div>
         </form>
       </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useDispatch } from 'react-redux'
 // components
 import ProductLayout from '@/layouts/ProductLayout'
 import LikeList from '@/components/Products/LikeList'
@@ -8,10 +9,12 @@ import LikeList from '@/components/Products/LikeList'
 // data
 import { API_URL } from '@/config/config'
 import { gql, GraphQLClient } from 'graphql-request'
+import { addToCart } from '@/features/cart/cartSlice'
 
 export default function ProductSingle( { product, categories } ) {
 
   const [ catProducts, setCatProducts ] = useState()
+  const dispatch = useDispatch()
 
   useEffect( () => {
     if ( product.attributes.category.data ) {
@@ -22,7 +25,9 @@ export default function ProductSingle( { product, categories } ) {
 
   }, [] )
 
-  console.log( catProducts )
+  const addItemToCart = () => {
+    dispatch( addToCart( product.id ) )
+  }
 
   return (
     <ProductLayout title={ product.attributes.name }>
@@ -63,7 +68,7 @@ export default function ProductSingle( { product, categories } ) {
               </div>
               <div className='flex flex-col gap-4 mt-8'>
                 <button className='bg-yellow-500 py-4 rounded'>Buy It Now</button>
-                <button className='bg-green-500 py-4 rounded'>Add To Cart</button>
+                <button className='bg-green-500 py-4 rounded' onClick={ addItemToCart }>Add To Cart</button>
               </div>
             </div>
           </div>
